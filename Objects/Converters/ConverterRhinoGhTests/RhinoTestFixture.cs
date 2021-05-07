@@ -10,7 +10,7 @@ namespace ConverterRhinoGhTests
     /// <summary>
     /// Shared test context across unit tests that loads rhinocommon.dll and grasshopper.dll
     /// </summary>
-    public class XunitTestFixture : IDisposable
+    public class RhinoTestFixture : IDisposable
     {
         private bool initialized = false;
         private static string rhinoDir;
@@ -19,7 +19,7 @@ namespace ConverterRhinoGhTests
         /// <summary>
         /// Empty Constuctor
         /// </summary>
-        public XunitTestFixture()
+        public RhinoTestFixture()
         {
             //get the correct rhino 7 installation directory
             rhinoDir = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\7.0\Install", "Path", null) as string ?? string.Empty;
@@ -91,7 +91,7 @@ namespace ConverterRhinoGhTests
     /// Collection Fixture - shared context across test classes
     /// </summary>
     [CollectionDefinition("RhinoTestingCollection")]
-    public class RhinoCollection : ICollectionFixture<XunitTestFixture>
+    public class RhinoCollection : ICollectionFixture<RhinoTestFixture>
     {
         // This class has no code, and is never created. Its purpose is simply
         // to be the place to apply [CollectionDefinition] and all the
