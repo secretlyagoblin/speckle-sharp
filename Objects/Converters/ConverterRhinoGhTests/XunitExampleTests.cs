@@ -28,7 +28,7 @@ namespace ConverterRhinoGhTests
         {
             
             var kit = Speckle.Core.Kits.KitManager.GetDefaultKit();
-            var converter = kit.LoadConverter(Speckle.Core.Kits.Applications.Rhino);
+            var converter = kit.LoadConverter(Speckle.Core.Kits.Applications.Rhino7);
             converter.SetContextDocument(doc);
             
             // Arrange

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConverterRhinoGh\ConverterRhino7\ConverterRhino7.csproj" />
     <ProjectReference Include="..\ConverterRhinoGh\ConverterRhinoGh.csproj" />
   </ItemGroup>
 
