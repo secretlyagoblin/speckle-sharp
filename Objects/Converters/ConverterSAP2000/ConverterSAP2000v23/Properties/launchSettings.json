@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConverterSAP2000v23": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Computers and Structures\\SAP2000 23\\SAP2000.exe"
+    }
+  }
+}

@@ -34,6 +34,8 @@ namespace Speckle.Core.Kits
     public const string ETABSv18 = "ETABSv18";
     public const string ETABSv19 = "ETABSv19";
     public const string ETABS = "ETABS";
+    public const string SAP2000v23 = "SAP2000v23";
+    public const string SAP2000 = "SAP2000";
 
     public const string Script = "Script";
     public const string Other = "Other";

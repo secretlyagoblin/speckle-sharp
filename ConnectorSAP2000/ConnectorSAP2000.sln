@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ConnectorSAP2000Shared", "ConnectorSAP2000Shared\ConnectorSAP2000Shared.shproj", "{1D87DC25-3BAB-4C4D-9171-5073EB2EA249}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local Dependencies", "Local Dependencies", "{71274E0B-C1E4-42F4-804A-4343F8029AA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73913F10-524D-4BBF-A5A3-B89CD350E731}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConverterSAP2000", "ConverterSAP2000", "{63DA71FD-7265-4D1E-BB18-9281054EC7AC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConverterSAP2000v23", "..\Objects\Converters\ConverterSAP2000\ConverterSAP2000v23\ConverterSAP2000v23.csproj", "{79A37C30-4F8A-45BF-A6D7-C568138F5196}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ConverterSAP2000Shared", "..\Objects\Converters\ConverterSAP2000\ConverterSAP2000Shared\ConverterSAP2000Shared.shproj", "{54BC269B-2867-4272-A6F3-567BD7CC7E92}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Objects", "..\Objects\Objects\Objects.csproj", "{997AD599-DCD7-4172-A590-6D1A416CF120}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopUI2", "..\DesktopUI2\DesktopUI2\DesktopUI2.csproj", "{D60CABCF-DE39-49D9-A6DB-25018A6AB778}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "..\Core\Core\Core.csproj", "{8524D2F1-2539-4624-91DB-56354E6A8347}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolygonMesher", "..\Objects\Converters\StructuralUtilities\PolygonMesher\PolygonMesher.csproj", "{E49906F1-8944-43D6-81C3-D5317E65CF51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorSAP2000v23", "ConnectorSAP2000v23\ConnectorSAP2000v23.csproj", "{D17E437B-F31F-4AC2-88D8-E3C18B16E575}"
+	ProjectSection(ProjectDependencies) = postProject
+		{79A37C30-4F8A-45BF-A6D7-C568138F5196} = {79A37C30-4F8A-45BF-A6D7-C568138F5196}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ConnectorSAP2000Shared\ConnectorSAP2000Shared.projitems*{1d87dc25-3bab-4c4d-9171-5073eb2ea249}*SharedItemsImports = 13
+		..\Objects\Converters\ConverterSAP2000\ConverterSAP2000Shared\ConverterSAP2000Shared.projitems*{54bc269b-2867-4272-a6f3-567bd7cc7e92}*SharedItemsImports = 13
+		..\Objects\Converters\ConverterSAP2000\ConverterSAP2000Shared\ConverterSAP2000Shared.projitems*{79a37c30-4f8a-45bf-a6d7-c568138f5196}*SharedItemsImports = 5
+		ConnectorSAP2000Shared\ConnectorSAP2000Shared.projitems*{d17e437b-f31f-4ac2-88d8-e3c18b16e575}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79A37C30-4F8A-45BF-A6D7-C568138F5196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A37C30-4F8A-45BF-A6D7-C568138F5196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A37C30-4F8A-45BF-A6D7-C568138F5196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A37C30-4F8A-45BF-A6D7-C568138F5196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{997AD599-DCD7-4172-A590-6D1A416CF120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{997AD599-DCD7-4172-A590-6D1A416CF120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{997AD599-DCD7-4172-A590-6D1A416CF120}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{997AD599-DCD7-4172-A590-6D1A416CF120}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D60CABCF-DE39-49D9-A6DB-25018A6AB778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D60CABCF-DE39-49D9-A6DB-25018A6AB778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D60CABCF-DE39-49D9-A6DB-25018A6AB778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D60CABCF-DE39-49D9-A6DB-25018A6AB778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8524D2F1-2539-4624-91DB-56354E6A8347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8524D2F1-2539-4624-91DB-56354E6A8347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8524D2F1-2539-4624-91DB-56354E6A8347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8524D2F1-2539-4624-91DB-56354E6A8347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E49906F1-8944-43D6-81C3-D5317E65CF51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E49906F1-8944-43D6-81C3-D5317E65CF51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E49906F1-8944-43D6-81C3-D5317E65CF51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E49906F1-8944-43D6-81C3-D5317E65CF51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D17E437B-F31F-4AC2-88D8-E3C18B16E575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D17E437B-F31F-4AC2-88D8-E3C18B16E575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D17E437B-F31F-4AC2-88D8-E3C18B16E575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D17E437B-F31F-4AC2-88D8-E3C18B16E575}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63DA71FD-7265-4D1E-BB18-9281054EC7AC} = {71274E0B-C1E4-42F4-804A-4343F8029AA2}
+		{79A37C30-4F8A-45BF-A6D7-C568138F5196} = {63DA71FD-7265-4D1E-BB18-9281054EC7AC}
+		{54BC269B-2867-4272-A6F3-567BD7CC7E92} = {63DA71FD-7265-4D1E-BB18-9281054EC7AC}
+		{997AD599-DCD7-4172-A590-6D1A416CF120} = {71274E0B-C1E4-42F4-804A-4343F8029AA2}
+		{D60CABCF-DE39-49D9-A6DB-25018A6AB778} = {71274E0B-C1E4-42F4-804A-4343F8029AA2}
+		{8524D2F1-2539-4624-91DB-56354E6A8347} = {71274E0B-C1E4-42F4-804A-4343F8029AA2}
+		{E49906F1-8944-43D6-81C3-D5317E65CF51} = {71274E0B-C1E4-42F4-804A-4343F8029AA2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89A9E2C1-8B41-44A2-9EFC-DDACFBED4C84}
+	EndGlobalSection
+EndGlobal

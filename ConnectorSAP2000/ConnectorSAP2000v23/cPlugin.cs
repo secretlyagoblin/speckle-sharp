@@ -13,16 +13,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 
-
-using ETABSv1;
+using SAP2000v1;
 
 using Speckle.Core.Logging;
-using Speckle.ConnectorETABS.Util;
-using Speckle.ConnectorETABS.UI;
+using Speckle.ConnectorSAP2000.Util;
+using Speckle.ConnectorSAP2000.UI;
 using System.Reflection;
 using System.IO;
 
-namespace SpeckleConnectorETABS
+namespace SpeckleConnectorSAP2000
 {
   public class cPlugin
   {
@@ -33,7 +32,7 @@ namespace SpeckleConnectorETABS
 
     public static Window MainWindow { get; private set; }
 
-    public static ConnectorBindingsETABS Bindings { get; set; }
+    public static ConnectorBindingsSAP2000 Bindings { get; set; }
 
     public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<DesktopUI2.App>()
     .UsePlatformDetect()
@@ -60,7 +59,7 @@ namespace SpeckleConnectorETABS
 
     private static void AppMain(Application app, string[] args)
     {
-      var viewModel = new MainWindowViewModel(Bindings);
+      var viewModel = new MainWindowViewModel();
       MainWindow = new MainWindow
       {
         DataContext = viewModel
@@ -72,7 +71,7 @@ namespace SpeckleConnectorETABS
 
     public static void OpenOrFocusSpeckle(cSapModel model)
     {
-      Bindings = new ConnectorBindingsETABS(model);
+      Bindings = new ConnectorBindingsSAP2000(model);
       CreateOrFocusSpeckle();
 
       //try
@@ -100,7 +99,7 @@ namespace SpeckleConnectorETABS
       IntPtr ptr = IntPtr.Zero;
       foreach (var process in processes)
       {
-        if (process.ProcessName.ToLower().Contains("etabs"))
+        if (process.ProcessName.ToLower().Contains("sap2000"))
         {
           ptr = process.MainWindowHandle;
           break;
@@ -136,7 +135,7 @@ namespace SpeckleConnectorETABS
 
     public int Info(ref string Text)
     {
-      Text = "This is a Speckle plugin for ETABS";
+      Text = "This is a Speckle plugin for SAP2000";
       return 0;
     }
 
@@ -154,17 +153,19 @@ namespace SpeckleConnectorETABS
       return a;
     }
 
+
+
     public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
     {
       model = SapModel;
       pluginCallback = ISapPlugin;
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(OnAssemblyResolve);
-      Setup.Init(ConnectorETABSUtils.ETABSAppName);
+      Setup.Init(ConnectorSAP2000Utils.SAP2000AppName);
       try
       {
         cHelper helper = new Helper();
-        var etabsObject = helper.GetObject("CSI.ETABS.API.ETABSObject");
-        model = etabsObject.SapModel;
+        var SAP2000Object = helper.GetObject("CSI.SAP2000.API.SapObject");
+        model = SAP2000Object.SapModel;
       }
       catch
       {
