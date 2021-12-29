@@ -9,5 +9,23 @@
     <Import_RootNamespace>ConverterSAP2000Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Partial Classes\Results\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ConverterSAP2000.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConverterSAP2000Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Analysis\ConvertModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Analysis\ConvertModelInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Analysis\ConvertModelSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Analysis\ConvertModelUnits.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Geometry\ConvertArea.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Geometry\ConvertFrame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Loading\ConvertLoadPattern.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Loading\Loading1DElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Loading\Loading2DElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Loading\LoadingNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Materials\ConvertMaterials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Properties\Convert1DProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Partial Classes\Properties\Convert2DProperty.cs" />
   </ItemGroup>
 </Project>
