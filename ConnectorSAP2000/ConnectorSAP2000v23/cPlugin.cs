@@ -43,20 +43,7 @@ namespace SpeckleConnectorSAP2000
 
 
 
-    public static void CreateOrFocusSpeckle()
-    {
-      if (MainWindow == null)
-      {
-
-        BuildAvaloniaApp().Start(AppMain, null);
-      }
-
-      MainWindow.Show();
-      MainWindow.Activate();
-
-
-    }
-
+ 
     private static void AppMain(Application app, string[] args)
     {
       var viewModel = new MainWindowViewModel();
@@ -69,54 +56,7 @@ namespace SpeckleConnectorSAP2000
       //Task.Run(() => app.Run(MainWindow));
     }
 
-    public static void OpenOrFocusSpeckle(cSapModel model)
-    {
-      Bindings = new ConnectorBindingsSAP2000(model);
-      CreateOrFocusSpeckle();
 
-      //try
-      //{
-      //    Setup.Init("ConnectorETABS");
-      //    if (Bootstrapper != null)
-      //    {
-      //        Bootstrapper.ShowRootView();
-      //        return;
-      //    }
-
-      //    Bootstrapper = new Bootstrapper()
-      //    {
-      //        Bindings = new ConnectorBindingsETABS(model)
-      //    };
-
-      //    if (Application.Current != null)
-      //        new StyletAppLoader() { Bootstrapper = Bootstrapper };
-      //    else
-      //        new App(Bootstrapper);
-
-
-
-      var processes = Process.GetProcesses();
-      IntPtr ptr = IntPtr.Zero;
-      foreach (var process in processes)
-      {
-        if (process.ProcessName.ToLower().Contains("sap2000"))
-        {
-          ptr = process.MainWindowHandle;
-          break;
-        }
-      }
-      if (ptr != IntPtr.Zero)
-      {
-        //Application.Current.MainWindow.Closed += SpeckleWindowClosed;
-        MainWindow.Closed += SpeckleWindowClosed;
-        MainWindow.Closing += SpeckleWindowClosed;
-      }
-      //}
-      //catch
-      //{
-      //    Bootstrapper = null;
-      //}
-    }
 
     private static void SpeckleWindowClosed(object sender, EventArgs e)
     {
@@ -157,9 +97,10 @@ namespace SpeckleConnectorSAP2000
 
     public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
     {
-      model = SapModel;
+      cSapModel model;
       pluginCallback = ISapPlugin;
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(OnAssemblyResolve);
+      AppDomain.CurrentDomain.ResourceResolve += new ResolveEventHandler(OnAssemblyResolve);
       Setup.Init(ConnectorSAP2000Utils.SAP2000AppName);
       try
       {
@@ -175,7 +116,32 @@ namespace SpeckleConnectorSAP2000
 
       try
       {
-        OpenOrFocusSpeckle(model);
+        Bindings = new ConnectorBindingsSAP2000(model);
+
+        if (MainWindow == null)
+        {
+
+          BuildAvaloniaApp().Start(AppMain, null);
+        }
+
+        MainWindow.Show();
+        MainWindow.Activate();
+        var processes = Process.GetProcesses();
+        IntPtr ptr = IntPtr.Zero;
+        foreach (var process in processes)
+        {
+          if (process.ProcessName.ToLower().Contains("sap2000"))
+          {
+            ptr = process.MainWindowHandle;
+            break;
+          }
+        }
+        if (ptr != IntPtr.Zero)
+        {
+          MainWindow.Closed += SpeckleWindowClosed;
+          MainWindow.Closing += SpeckleWindowClosed;
+        }
+
         SelectionTimer = new Timer(2000) { AutoReset = true, Enabled = true };
         SelectionTimer.Elapsed += SelectionTimer_Elapsed;
         SelectionTimer.Start();

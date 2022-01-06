@@ -79,27 +79,6 @@ namespace SpeckleConnectorETABS
       CreateOrFocusSpeckle();
 
 
-      //try
-      //{
-      //    Setup.Init("ConnectorETABS");
-      //    if (Bootstrapper != null)
-      //    {
-      //        Bootstrapper.ShowRootView();
-      //        return;
-      //    }
-
-      //    Bootstrapper = new Bootstrapper()
-      //    {
-      //        Bindings = new ConnectorBindingsETABS(model)
-      //    };
-
-      //    if (Application.Current != null)
-      //        new StyletAppLoader() { Bootstrapper = Bootstrapper };
-      //    else
-      //        new App(Bootstrapper);
-
-
-
       var processes = Process.GetProcesses();
       IntPtr ptr = IntPtr.Zero;
       foreach (var process in processes)
