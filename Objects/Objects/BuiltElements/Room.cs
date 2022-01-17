@@ -4,11 +4,13 @@ using Speckle.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
+using Speckle.Newtonsoft.Json;
 
 namespace Objects.BuiltElements
 {
-  public class Room : Base, IHasArea, IHasVolume, IDisplayMesh
+  public class Room : Base, IHasArea, IHasVolume, IDisplayMesh, IDisplayValues
   {
     public string name { get; set; }
     public string number { get; set; }
@@ -19,8 +21,18 @@ namespace Objects.BuiltElements
     public List<ICurve> voids { get; set; } = new List<ICurve>();
     public ICurve outline { get; set; }
 
+    #region DisplayValues
+    [JsonIgnore, Obsolete("Use " + nameof(displayValues) + " instead")]
+    public Mesh displayMesh {
+      get => displayValues?.FirstOrDefault();
+      set => displayValues = new List<Mesh> {value};
+    }
+    
     [DetachProperty]
-    public Mesh displayMesh { get; set; }
+    public List<Mesh> displayValues { get; set; }
+    [JsonIgnore] IReadOnlyList<Base> IDisplayValues.displayValues => displayValues;
+    #endregion
+
 
     public string units { get; set; }
 

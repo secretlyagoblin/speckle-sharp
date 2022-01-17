@@ -3,12 +3,14 @@ using Speckle.Core.Kits;
 using Speckle.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Objects.BuiltElements.Revit.Curve;
+using Speckle.Newtonsoft.Json;
 
 namespace Objects.BuiltElements
 {
-    public class Space : Base, IHasArea, IHasVolume, IDisplayMesh
+    public class Space : Base, IHasArea, IHasVolume, IDisplayMesh, IDisplayValues<Mesh>
     {
         public string name { get; set; }
         public string number { get; set; }
@@ -26,8 +28,18 @@ namespace Objects.BuiltElements
 
         // additional properties to add: also inclue space separation lines here? Phase? Associated Room? Zone object instead of id?
 
+        #region DisplayValues
+        [JsonIgnore, Obsolete("Use " + nameof(displayValues) + " instead")]
+        public Mesh displayMesh {
+            get => displayValues?.FirstOrDefault();
+            set => displayValues = new List<Mesh> {value};
+        }
+    
         [DetachProperty]
-        public Mesh displayMesh { get; set; }
+        public List<Mesh> displayValues { get; set; }
+        [JsonIgnore] IReadOnlyList<Base> IDisplayValues.displayValues => displayValues;
+        #endregion
+        
         public string units { get; set; }
         public Space() { }
 

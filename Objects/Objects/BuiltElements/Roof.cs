@@ -4,11 +4,13 @@ using Speckle.Core.Kits;
 using Speckle.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Speckle.Newtonsoft.Json;
 
 namespace Objects.BuiltElements
 {
-  public class Roof : Base, IDisplayMesh
+  public class Roof : Base, IDisplayMesh, IDisplayValues<Mesh>
   {
     public ICurve outline { get; set; }
     public List<ICurve> voids { get; set; } = new List<ICurve>();
@@ -16,8 +18,18 @@ namespace Objects.BuiltElements
     [DetachProperty]
     public List<Base> elements { get; set; }
 
+    #region DisplayValues
+    [JsonIgnore, Obsolete("Use " + nameof(displayValues) + " instead")]
+    public Mesh displayMesh {
+      get => displayValues?.FirstOrDefault();
+      set => displayValues = new List<Mesh> {value};
+    }
+    
     [DetachProperty]
-    public Mesh displayMesh { get; set; }
+    public List<Mesh> displayValues { get; set; }
+    [JsonIgnore] IReadOnlyList<Base> IDisplayValues.displayValues => displayValues;
+    #endregion
+
 
     public string units { get; set; }
 

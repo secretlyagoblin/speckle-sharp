@@ -1,13 +1,15 @@
-﻿using Speckle.Newtonsoft.Json;
+﻿using System;
+using Speckle.Newtonsoft.Json;
 using Speckle.Core.Kits;
 using Speckle.Core.Models;
 using System.Collections.Generic;
+using System.Linq;
 using Objects.Geometry;
 using Objects.Structural.Properties;
 
 namespace Objects.Structural.Geometry
 {
-    public class Element2D : Base, IDisplayMesh
+    public class Element2D : Base, IDisplayMesh, IDisplayValues<Mesh>
     {        
         public string name { get; set; }
 
@@ -22,9 +24,19 @@ namespace Objects.Structural.Geometry
 
         [DetachProperty]
         public List<Node> topology { get; set; }
-
+        
+        #region DisplayValues
+        [JsonIgnore, Obsolete("Use " + nameof(displayValues) + " instead")]
+        public Mesh displayMesh {
+            get => displayValues?.FirstOrDefault();
+            set => displayValues = new List<Mesh> {value};
+        }
+    
         [DetachProperty]
-        public Mesh displayMesh { get; set; }
+        public List<Mesh> displayValues { get; set; }
+        [JsonIgnore] IReadOnlyList<Base> IDisplayValues.displayValues => displayValues;
+        #endregion
+        
         public string units { get; set; }
 
         public Element2D() { }

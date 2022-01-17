@@ -1,4 +1,5 @@
-﻿using Speckle.Newtonsoft.Json;
+﻿using System;
+using Speckle.Newtonsoft.Json;
 using Speckle.Core.Kits;
 using Speckle.Core.Models;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Objects.Primitive;
 
 namespace Objects.Geometry
 {
-  public class Brep : Base, IHasArea, IHasVolume, IHasBoundingBox, IDisplayMesh, ITransformable<Brep>
+  public class Brep : Base, IHasArea, IHasVolume, IHasBoundingBox, IDisplayMesh, ITransformable<Brep>, IDisplayValues
   {
     public string provenance { get; set; }
     public Box bbox { get; set; }
@@ -19,8 +20,18 @@ namespace Objects.Geometry
     public double volume { get; set; }
     public string units { get; set; }
 
+    #region DisplayValues
+    [JsonIgnore, Obsolete("Use " + nameof(displayValues) + " instead")]
+    public Mesh displayMesh {
+      get => displayValues?.FirstOrDefault();
+      set => displayValues = new List<Mesh> {value};
+    }
+    
     [DetachProperty]
-    public Mesh displayMesh { get; set; }
+    public List<Mesh> displayValues { get; set; }
+    [JsonIgnore] IReadOnlyList<Base> IDisplayValues.displayValues => displayValues;
+    #endregion
+
 
     /// <summary>
     /// Gets or sets the list of surfaces in this <see cref="Brep"/> instance.

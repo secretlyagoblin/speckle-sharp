@@ -1,18 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Objects.Geometry;
 using Objects.Utils;
 using Speckle.Core.Kits;
 using Speckle.Core.Models;
+using Speckle.Newtonsoft.Json;
 
 namespace Objects.BuiltElements
 {
-  public class Pipe : Base, IDisplayMesh
+  public class Pipe : Base, IDisplayMesh, IDisplayValues<Mesh>
   {
     public ICurve baseCurve { get; set; }
     public double length { get; set; }
     public double diameter { get; set; }
 
-    [DetachProperty] public Mesh displayMesh { get; set; }
+    #region DisplayValues
+    [JsonIgnore, Obsolete("Use " + nameof(displayValues) + " instead")]
+    public Mesh displayMesh {
+      get => displayValues?.FirstOrDefault();
+      set => displayValues = new List<Mesh> {value};
+    }
+    
+    [DetachProperty]
+    public List<Mesh> displayValues { get; set; }
+    [JsonIgnore] IReadOnlyList<Base> IDisplayValues.displayValues => displayValues;
+    #endregion
 
     public string units { get; set; }
 
