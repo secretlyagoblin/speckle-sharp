@@ -25,16 +25,18 @@ namespace Objects.Converter.RhinoGh
   {
     public Rhino.Geometry.Hatch[] HatchToNative(Hatch hatch)
     {
+      if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document to extract Hatchpatterns");
+      var doc = RhinoContext.InnerDocument;
 
       var curves = new List<Rhino.Geometry.Curve>();
       curves = (hatch.loops != null) ? hatch.loops.Select(o => CurveToNative(o.Curve)).ToList() : hatch.curves.Select(o => CurveToNative(o)).ToList();
-      var pattern = Doc.HatchPatterns.FindName(hatch.pattern);
+      var pattern = doc.HatchPatterns.FindName(hatch.pattern);
       int index;
       if (pattern == null)
       {
         // find default hatch pattern
         pattern = FindDefaultPattern(hatch.pattern);
-        index = Doc.HatchPatterns.Add(pattern);
+        index = doc.HatchPatterns.Add(pattern);
       }
       else
         index = pattern.Index;
@@ -44,6 +46,9 @@ namespace Objects.Converter.RhinoGh
     }
     public Hatch HatchToSpeckle(Rhino.Geometry.Hatch hatch)
     {
+      if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document to extract Hatchpatterns");
+      var doc = RhinoContext.InnerDocument;
+
       var _hatch = new Hatch();
 
       // retrieve hatch loops
@@ -55,7 +60,7 @@ namespace Objects.Converter.RhinoGh
 
       _hatch.loops = loops;
       _hatch.scale = hatch.PatternScale;
-      _hatch.pattern = Doc.HatchPatterns.ElementAt(hatch.PatternIndex).Name;
+      _hatch.pattern = doc.HatchPatterns.ElementAt(hatch.PatternIndex).Name;
       _hatch.rotation = hatch.PatternRotation;
 
       return _hatch;
@@ -71,7 +76,10 @@ namespace Objects.Converter.RhinoGh
 
     public BlockDefinition BlockDefinitionToSpeckle(RH.InstanceDefinition definition)
     {
-      var geometry = new List<Base>();
+      if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document in this context");
+            var doc = RhinoContext.InnerDocument;
+
+            var geometry = new List<Base>();
       foreach (var obj in definition.GetObjects())
       {
         if (CanConvertToSpeckle(obj))
@@ -79,7 +87,7 @@ namespace Objects.Converter.RhinoGh
           Base converted = ConvertToSpeckle(obj);
           if (converted != null)
           {
-            converted["Layer"] = Doc.Layers[obj.Attributes.LayerIndex].FullPath;
+            converted["Layer"] = doc.Layers[obj.Attributes.LayerIndex].FullPath;
             geometry.Add(converted);
           }
         }
@@ -98,12 +106,16 @@ namespace Objects.Converter.RhinoGh
 
     public InstanceDefinition BlockDefinitionToNative(BlockDefinition definition)
     {
-      // get modified definition name with commit info
-      var commitInfo = GetCommitInfo();
+      if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document in this context");
+      var doc = RhinoContext.InnerDocument;
+
+
+            // get modified definition name with commit info
+            var commitInfo = GetCommitInfo();
       var blockName = $"{commitInfo} - {definition.name}";
 
       // see if block name already exists and return if so
-      if (Doc.InstanceDefinitions.Find(blockName) is InstanceDefinition def)
+      if (doc.InstanceDefinitions.Find(blockName) is InstanceDefinition def)
         return def;
 
       // base point
@@ -124,7 +136,7 @@ namespace Objects.Converter.RhinoGh
               if (instance != null)
               {
                 converted.Add(instance.DuplicateGeometry());
-                Doc.Objects.Delete(instance);
+                doc.Objects.Delete(instance);
               }
               break;
             default:
@@ -141,7 +153,7 @@ namespace Objects.Converter.RhinoGh
           var layerName = (geo["Layer"] != null) ? $"{commitInfo}{Layer.PathSeparator}{geo["Layer"] as string}" : $"{commitInfo}";
           int index = 1;
           if (layerName != null)
-            GetLayer(Doc, layerName, out index, true);
+            GetLayer(doc, layerName, out index, true);
           var attribute = new ObjectAttributes()
           {
             LayerIndex = index
@@ -151,12 +163,12 @@ namespace Objects.Converter.RhinoGh
         }
       }
 
-      int definitionIndex = Doc.InstanceDefinitions.Add(blockName, string.Empty, basePoint, geometry, attributes);
+      int definitionIndex = doc.InstanceDefinitions.Add(blockName, string.Empty, basePoint, geometry, attributes);
 
       if (definitionIndex < 0)
         return null;
 
-      var blockDefinition = Doc.InstanceDefinitions[definitionIndex];
+      var blockDefinition = doc.InstanceDefinitions[definitionIndex];
 
       return blockDefinition;
     }
@@ -186,8 +198,11 @@ namespace Objects.Converter.RhinoGh
 
     public InstanceObject BlockInstanceToNative(BlockInstance instance)
     {
-      // get the block definition
-      InstanceDefinition definition = BlockDefinitionToNative(instance.blockDefinition);
+       if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document in this context");
+       var doc = RhinoContext.InnerDocument;
+
+            // get the block definition
+            InstanceDefinition definition = BlockDefinitionToNative(instance.blockDefinition);
 
       // get the transform
       // rhino doesn't seem to handle transform matrices where the translation vector last value is a divisor instead of 1, so make sure last value is set to 1
@@ -215,12 +230,12 @@ namespace Objects.Converter.RhinoGh
       // create the instance
       if (definition == null)
         return null;
-      Guid instanceId = Doc.Objects.AddInstanceObject(definition.Index, transform);
+      Guid instanceId = doc.Objects.AddInstanceObject(definition.Index, transform);
 
       if (instanceId == Guid.Empty)
         return null;
 
-      return Doc.Objects.FindId(instanceId) as InstanceObject;
+      return doc.Objects.FindId(instanceId) as InstanceObject;
     }
 
     // Text

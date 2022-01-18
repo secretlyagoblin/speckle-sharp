@@ -21,10 +21,13 @@ namespace Objects.Converter.RhinoGh
       var renderMaterial = new RenderMaterial();
 
       // If it's a default material use the display color.
-      if (!material.HasId)
+      if (!material.HasId && RhinoContext.HasDocument)
       {
-        renderMaterial.diffuse = o.Attributes.DrawColor(Doc).ToArgb();
+        renderMaterial.diffuse = o.Attributes.DrawColor(RhinoContext.InnerDocument).ToArgb();
         return renderMaterial;
+      } else if (!material.HasId)
+      {
+         return renderMaterial;
       }
 
       // Otherwise, extract what properties we can. 
@@ -44,14 +47,17 @@ namespace Objects.Converter.RhinoGh
 
     private DisplayStyle GetStyle(RhinoObject o)
     {
+            if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document in this context");
+            var doc = RhinoContext.InnerDocument;
+
       var att = o.Attributes;
       var style = new DisplayStyle();
 
       // color
-      style.color = att.DrawColor(Doc).ToArgb();
+      style.color = att.DrawColor(doc).ToArgb();
 
       // linetype
-      var lineType = Doc.Linetypes[att.LinetypeIndex];
+      var lineType = doc.Linetypes[att.LinetypeIndex];
       if (lineType.HasName)
         style.linetype = lineType.Name;
 
@@ -83,16 +89,16 @@ namespace Objects.Converter.RhinoGh
 
     private string GetCommitInfo()
     {
-      var segments = Doc.Notes.Split(new string[] { "%%%" }, StringSplitOptions.None).ToList();
+      var segments = RhinoContext.InnerDocument.Notes.Split(new string[] { "%%%" }, StringSplitOptions.None).ToList();
       return segments.Count > 1 ? segments[1] : "Unknown commit";
     }
 
-    #region Units
+        #region Units
 
     /// <summary>
     /// Computes the Speckle Units of the current Document. The Rhino document is passed as a reference, so it will always be up to date.
     /// </summary>    
-    public string ModelUnits => UnitToSpeckle(Doc.ModelUnitSystem);
+    public string ModelUnits => RhinoContext.ModelUnits;
 
     private void SetUnits(Base geom)
     {
@@ -105,68 +111,7 @@ namespace Objects.Converter.RhinoGh
       return value * f;
     }
 
-    private string UnitToSpeckle(UnitSystem us)
-    {
-      switch (us)
-      {
-        case UnitSystem.None:
-          return Units.Meters;
-        //case UnitSystem.Angstroms:
-        //  break;
-        //case UnitSystem.Nanometers:
-        //  break;
-        //case UnitSystem.Microns:
-        //  break;
-        case UnitSystem.Millimeters:
-          return Units.Millimeters;
-        case UnitSystem.Centimeters:
-          return Units.Centimeters;
-        //case UnitSystem.Decimeters:
-        //  break;
-        case UnitSystem.Meters:
-          return Units.Meters;
-        //case UnitSystem.Dekameters:
-        //  break;
-        //case UnitSystem.Hectometers:
-        //  break;
-        case UnitSystem.Kilometers:
-          return Units.Kilometers;
-        //case UnitSystem.Megameters:
-        //  break;
-        //case UnitSystem.Gigameters:
-        //  break;
-        //case UnitSystem.Microinches:
-        //  break;
-        //case UnitSystem.Mils:
-        //  break;
-        case UnitSystem.Inches:
-          return Units.Inches;
-        case UnitSystem.Feet:
-          return Units.Feet;
-        case UnitSystem.Yards:
-          return Units.Yards;
-        case UnitSystem.Miles:
-          return Units.Miles;
-        //case UnitSystem.PrinterPoints:
-        //  break;
-        //case UnitSystem.PrinterPicas:
-        //  break;
-        //case UnitSystem.NauticalMiles:
-        //  break;
-        //case UnitSystem.AstronomicalUnits:
-        //  break;
-        //case UnitSystem.LightYears:
-        //  break;
-        //case UnitSystem.Parsecs:
-        //  break;
-        //case UnitSystem.CustomUnits:
-        //  break;
-        case UnitSystem.Unset:
-          return Units.Meters;
-        default:
-          throw new Speckle.Core.Logging.SpeckleException($"The Unit System \"{us}\" is unsupported.");
-      }
-    }
+
     #endregion
 
     #region Layers

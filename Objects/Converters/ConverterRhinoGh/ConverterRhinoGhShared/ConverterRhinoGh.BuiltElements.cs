@@ -60,8 +60,11 @@ namespace Objects.Converter.RhinoGh
     public string ViewToNative(View3D view)
     {
       Rhino.RhinoApp.InvokeOnUiThread((Action)delegate {
+          
+        if (!RhinoContext.HasDocument) throw new Exception("No Rhino Document in this context");
+          var doc = RhinoContext.InnerDocument;
 
-        RhinoView _view = Doc.Views.ActiveView;
+          RhinoView _view = doc.Views.ActiveView;
         RhinoViewport viewport = _view.ActiveViewport;
         viewport.SetProjection(DefinedViewportProjection.Perspective, null, false);
         var origin = PointToNative(view.origin).Location;
@@ -96,7 +99,7 @@ namespace Objects.Converter.RhinoGh
         var commitInfo = GetCommitInfo();
         var viewName = $"{commitInfo } - {view.name}";
 
-        Doc.NamedViews.Add(viewName, viewport.Id);
+        doc.NamedViews.Add(viewName, viewport.Id);
       });
 
       //ConversionErrors.Add(sdfasdfaf);
@@ -246,7 +249,7 @@ namespace Objects.Converter.RhinoGh
     // edge curve convenience method
     private List<ICurve> GetSurfaceBrepEdges(RH.Brep brep, bool getExterior = true, bool getInterior = false, bool getBottom = false)
     {
-      double tol = Doc.ModelAbsoluteTolerance * 1;
+      double tol = RhinoContext.ModelAbsoluteTolerance * 1;
 
       RH.Curve[] brpCurves = null;
       if (getInterior)

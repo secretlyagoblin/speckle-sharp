@@ -14,5 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ConverterRhinoGh.Geometry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConverterRhinoGh.Other.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConverterRhinoGh.Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RhinoGhConverterContext.cs" />
   </ItemGroup>
 </Project>

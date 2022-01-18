@@ -78,7 +78,7 @@ namespace Objects.Converter.RhinoGh
 
     public HashSet<Exception> ConversionErrors { get; private set; } = new HashSet<Exception>();
 
-    public RhinoDoc Doc { get; private set; } = Rhino.RhinoDoc.ActiveDoc ?? null;
+    public RhinoGhConverterContext RhinoContext { get; private set; } = new RhinoGhConverterContext(Rhino.RhinoDoc.ActiveDoc);
 
     public List<ApplicationPlaceholderObject> ContextObjects { get; set; } = new List<ApplicationPlaceholderObject>();
 
@@ -93,8 +93,9 @@ namespace Objects.Converter.RhinoGh
 
     public void SetContextDocument(object doc)
     {
-      Doc = (RhinoDoc)doc;
-      Report.Log($"Using document: {Doc.Path}");
+      RhinoContext = new RhinoGhConverterContext((RhinoDoc)doc);
+
+      Report.Log($"Using document: {RhinoContext.Path}");
       Report.Log($"Using units: {ModelUnits}");
     }
 
